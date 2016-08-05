@@ -1,6 +1,5 @@
 package com.monians.imageloader;
 
-import android.content.Context;
 import android.widget.ImageView;
 
 import java.io.Serializable;
@@ -11,17 +10,13 @@ import java.io.Serializable;
  */
 public abstract class ImageLoader implements Serializable {
 
-    protected static Context mContext;          // 上下文
-    private static ImageLoader mImageLoader;    // 当前类对象
-
+    protected static ImageLoaderConfig mConfig;
     /**
      * 在全局变量中进行初始化
-     * @param context 上下文
-     * @param imageLoader 当前类对象
+     * @param config
      */
-    public static void init(Context context, ImageLoader imageLoader) {
-        mContext = context;
-        mImageLoader = imageLoader;
+    public static void init(ImageLoaderConfig config) {
+        mConfig = config;
     }
 
     /**
@@ -30,14 +25,15 @@ public abstract class ImageLoader implements Serializable {
      */
     public static ImageLoader getInstance() {
         synchronized (ImageLoader.class) {
-            if (null != mImageLoader) {
-                return mImageLoader;
+            if (null != mConfig) {
+                return mConfig.getImageLoader();
             } else {
                 throw new RuntimeException("Please, in the global variable initialization ImageLoader.init()");
             }
         }
     }
 
-    public abstract void display(String imageUrl, ImageView imageView);
+    public abstract void display(Object object, ImageView imageView);
+
 
 }
